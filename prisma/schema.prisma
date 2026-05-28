@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id String @id @default(cuid())
+  name String 
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  entries Entry []
+  books Book []
+}
+
+model Book {
+  id String @id @default(cuid())
+  title String 
+  author String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  entries Entry []
+
+
+  @@unique([userId, title])
+  @@map("books")
+
+}
+
+model Entry {
+  id String @id @default(cuid())
+  text String
+  definition String
+  example String?
+  mastered Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bookId String
+  book Book @relation(fields: [bookId], references: [id], onDelete: SetNull)
+  
+  @@unique([userId, text])
+  @@map("entries")
+
+}
+
+
