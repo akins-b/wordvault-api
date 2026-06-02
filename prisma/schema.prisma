@@ -45,6 +45,8 @@ model Entry {
   text String
   definition String
   example String?
+  synonyms String[] @default([])
+  antonyms String[] @default([])
   mastered Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
