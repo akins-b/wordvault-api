@@ -1,0 +1,298 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ROOT VARIABLES */
+:root {
+  --accent: #FFF176;
+  --accent-hover: #FFEE58;
+  --accent-text: #7A6500;
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+  --border: #E5E7EB;
+  --bg: #FFFFFF;
+  --radius: 8px;
+}
+
+/* BODY */
+body {
+  width: 360px;
+  min-height: 400px;
+  font-family: Inter;
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: 24px 20px;
+}
+
+/* UTILITY */
+.hidden {
+  display: none !important;
+  
+}
+
+/* AUTH SCREEN */
+#auth-screen {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  text-align: center;
+  align-items: center;
+  padding-top: 40px;
+  gap: 8px;
+}
+
+#auth-screen h1 {
+  text-align: center;
+  padding-top: 32px;
+  letter-spacing: -0.5px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+#auth-screen p {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* BUTTONS */
+button {
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+#sign-in-btn {
+  background: var(--accent);
+  color: var(--text-primary);
+  border-radius: 12px;
+}
+
+#sign-in-btn:hover {
+  background: var(--accent-hover);
+}
+
+#sign-up-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 12px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 280px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin: 4px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* AUTH TABS */
+#auth-tabs {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  width: 280px;
+  margin-bottom: 16px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* AUTH INPUTS */
+#signin-form, #signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 280px;
+}
+
+#signin-form input, #signup-form input {
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+}
+
+#signin-form input:focus, #signup-form input:focus {
+  border-color: var(--accent-hover);
+}
+
+#sign-in-btn, #sign-up-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  margin-top: 4px;
+}
+
+#sign-in-btn:hover, #sign-up-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* AUTH FEEDBACK */
+#auth-feedback {
+  width: 280px;
+  text-align: center;
+  padding: 8px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+#auth-feedback.error {
+  background: #FEF2F2;
+  color: #991B1B;
+}
+
+#auth-feedback.success {
+  background: #F0FDF4;
+  color: #166534;
+}
+
+/* HEADER */
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* SEARCH SECTION */
+#search-section {
+  display: flex;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+#word-input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+#word-input:focus {
+  border-color: var(--accent-hover);
+}
+
+#lookup-btn {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* RESULT SECTION */
+#result-section {
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+
+#result-word {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#result-definition {
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* TAGS (synonyms/antonyms) */
+.tag {
+  display: inline-block;
+  background: #F9FAFB;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 2px 10px;
+  font-size: 12px;
+  margin: 2px;
+}
+
+/* SAVE SECTION */
+#save-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+#book-select {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  width: 100%;
+}
+
+#save-btn {
+  background: var(--accent);
+  color: var(--accent-text);
+  width: 100%;
+  font-weight: 600;
+}
+
+/* FEEDBACK */
+#feedback {
+  text-align: center;
+  padding: 8px;
+  border-radius: var(--radius);
+  font-size: 14px;
+}
+
+#feedback.success {
+  background: #F0FDF4;
+  color: #166534;
+}
+
+#feedback.error {
+  background: #FEF2F2;
+  color: #991B1B;
+}
+
+/* LOADING */
+#loading {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 16px;
+}

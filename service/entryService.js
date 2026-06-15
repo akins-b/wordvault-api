@@ -44,6 +44,15 @@ async function createEntry(data){
     }
 }
 
+async function lookupEntry({ text, wantsExample }) {
+    try {
+        const { definition, example, synonyms, antonyms } = await generate({ text, wantsExample });
+        return { text, definition, example, synonyms, antonyms };
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function getAllEntries(userId){
     try {
         const entries = await prisma.entry.findMany({
@@ -104,6 +113,7 @@ async function deleteEntry(data){
 
 module.exports = {
     createEntry,
+    lookupEntry,
     getAllEntries,
     getEntryById,
     updateEntry,

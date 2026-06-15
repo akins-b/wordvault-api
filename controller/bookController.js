@@ -1,10 +1,9 @@
-const { getAuth } = require("@clerk/express");
 const bookService = require("../service/bookService");
 
 
 async function createBook(req, res){
     try {
-        const { userId } = getAuth(req);  
+        const userId = req.headers['x-user-id'];  
         console.log('userId:', userId);  
 
         if (!userId) return res.status(401).json({ message: 'no user id so Unauthorized' });
@@ -21,7 +20,8 @@ async function createBook(req, res){
 
 async function getAllBooks(req, res){
     try {
-        const books = await bookService.getAllBooks();
+        const userId = req.headers['x-user-id'];  
+        const books = await bookService.getAllBooks(userId);
         res.json(books);
     } catch (error) {
         res.status(500).json({message: error.message});
@@ -32,7 +32,7 @@ async function getBookById(req, res){
     try {
         const book = await bookService.getBookById({
             id: req.params.id,
-            userId: req.auth.userId,
+            userId: req.headers['x-user-id'],
         });
         res.json(book);
     } catch (error) {
@@ -45,7 +45,7 @@ async function updateBook(req, res){
         const book = await bookService.updateBook({
             ...req.body,
             id: req.params.id,
-            userId: req.auth.userId,
+            userId: req.headers['x-user-id'],
         });
         res.json(book);
     } catch (error) {
@@ -57,7 +57,7 @@ async function deleteBook(req, res){
     try {
         const message = await bookService.deleteBook({
             id: req.params.id,
-            userId: req.auth.userId,
+            userId: req.headers['x-user-id'],
         });
         res.status(200).json({message: message});
     } catch (error) {

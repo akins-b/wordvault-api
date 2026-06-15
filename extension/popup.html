@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordVault</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- AUTH SCREEN -->
+  <div id="auth-screen">
+    <h1>📖 WordVault</h1>
+    <p>Save words as you browse</p>
+
+    <!-- tabs -->
+    <div id="auth-tabs">
+      <button class="tab-btn active" id="signin-tab">Sign In</button>
+      <button class="tab-btn" id="signup-tab">Sign Up</button>
+    </div>
+
+    <!-- sign in form -->
+    <div id="signin-form">
+      <input type="email" id="signin-email" placeholder="Email" />
+      <input type="password" id="signin-password" placeholder="Password" />
+      <button id="sign-in-btn">Sign In</button>
+    </div>
+
+    <!-- sign up form -->
+    <div id="signup-form" class="hidden">
+      <input type="text" id="signup-firstname" placeholder="First Name" />
+      <input type="text" id="signup-lastname" placeholder="Last Name" />
+      <input type="text" id="signup-username" placeholder="Username" />
+      <input type="email" id="signup-email" placeholder="Email" />
+      <input type="password" id="signup-password" placeholder="Password" />
+      <button id="sign-up-btn">Sign Up</button>
+    </div>
+
+    <div id="auth-feedback" class="hidden"></div>
+  </div>
+
+  <!-- LOOKUP SCREEN -->
+  <div id="lookup-screen" class="hidden">
+
+    <!-- header -->
+    <div id="header">
+      <h1>WordVault</h1>
+      <button id="sign-out-btn">Sign out</button>
+    </div>
+
+    <!-- word input -->
+    <div id="search-section">
+      <input type="text" id="word-input" placeholder="Enter a word or phrase..." />
+      <button id="lookup-btn">Look up</button>
+    </div>
+
+    <!-- result -->
+    <div id="result-section" class="hidden">
+      <h2 id="result-word"></h2>
+      <p id="result-definition"></p>
+      <p id="result-example" class="hidden"></p>
+
+      <div id="synonyms-section">
+        <h4>Synonyms</h4>
+        <div id="result-synonyms"></div>
+      </div>
+
+      <div id="antonyms-section">
+        <h4>Antonyms</h4>
+        <div id="result-antonyms"></div>
+      </div>
+
+      <!-- save options -->
+      <div id="save-section">
+        <label>
+          <input type="checkbox" id="wants-example" /> Include example sentence
+        </label>
+        <select id="book-select">
+          <option value="">No book (save standalone)</option>
+        </select>
+        <button id="save-btn">Save to WordVault</button>
+      </div>
+    </div>
+
+    <!-- loading & feedback -->
+    <div id="loading" class="hidden">Looking up...</div>
+    <div id="feedback" class="hidden"></div>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

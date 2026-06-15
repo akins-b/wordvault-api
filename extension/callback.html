@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>WordVault</title></head>
+<body>
+  <p>Signing you in...</p>
+
+  <script>
+    async function initClerk() {
+      await window.Clerk.load();
+
+      if (window.Clerk.session) {
+        const token = await window.Clerk.session.getToken();
+
+        chrome.storage.local.set({ token }, () => {
+          window.close();
+        });
+      } else {
+        document.body.innerHTML = '<p>Sign in failed. Please try again.</p>';
+      }
+    }
+  </script>
+
+  <script
+    data-clerk-publishable-key="pk_test_YOUR_KEY"
+    src="https://current-whippet-53.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+    onload="initClerk()"
+  ></script>
+</body>
+</html>

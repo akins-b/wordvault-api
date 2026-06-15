@@ -11,12 +11,10 @@ async function createBook(book){
     }
 }
 
-async function getAllBooks(){
+async function getAllBooks(userId){
     try {
         const books = await prisma.book.findMany({
-            include: {
-                user: true
-            }
+            where: { userId }
         });
         return books;
     } catch (error){
