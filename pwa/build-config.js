@@ -1,5 +1,11 @@
-require('dotenv').config();
 const fs = require('fs');
+
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  try {
+    require('dotenv').config();
+  } catch (e) {
+  }
+}
 
 const apiUrl = process.env.API_URL || 'http://localhost:3006';
 

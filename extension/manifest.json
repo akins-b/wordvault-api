@@ -31,8 +31,6 @@
     }
   ],
   "host_permissions": [
-    "https://herman-cognisable-intensely.ngrok-free.dev/*",
-    "http://localhost:3006/*",
     "https://wordvault-api.onrender.com/*"
   ],
   "web_accessible_resources": [{

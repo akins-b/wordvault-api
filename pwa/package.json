@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node build-config.js"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2"
   }
 }
