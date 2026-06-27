@@ -11,7 +11,18 @@ async function getUserById(req, res){
 
 }
 
+async function getStats(req, res) {
+  try {
+    const userId = req.headers['x-user-id'];
+    const stats = await userService.getStats(userId);
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 
 module.exports = {
-    getUserById
+    getUserById,
+    getStats
 }

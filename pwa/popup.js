@@ -1,3 +1,4 @@
+
 const signinTab = document.getElementById('signin-tab');
 const signupTab = document.getElementById('signup-tab');
 const signinForm = document.getElementById('signin-form');
@@ -27,19 +28,6 @@ function showAuthFeedback(message, type = 'error') {
 }
 
 
-async function getToken() {
-  return new Promise(resolve => chrome.storage.local.get('token', r => resolve(r.token)));
-}
-
-async function saveToken(token) {
-  return new Promise(resolve => chrome.storage.local.set({ token }, resolve));
-}
-
-async function saveUserId(userId) {
-  return new Promise(resolve => chrome.storage.local.set({ userId }, resolve));
-}
-
-
 document.getElementById('sign-in-btn').addEventListener('click', async () => {
   const email = document.getElementById('signin-email').value.trim();
   const password = document.getElementById('signin-password').value.trim();
@@ -49,15 +37,15 @@ document.getElementById('sign-in-btn').addEventListener('click', async () => {
   try {
     const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
 
     const data = await res.json();
 
     if (res.ok) {
-      await saveToken(data.token);
-      await saveUserId(data.userId);
+      saveToken(data.token);
+      saveUserId(data.userId);
       window.location.href = 'dashboard.html';
     } else {
       showAuthFeedback(data.message);
@@ -81,15 +69,15 @@ document.getElementById('sign-up-btn').addEventListener('click', async () => {
   try {
     const res = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ firstName, lastName, username, email, password })
     });
 
     const data = await res.json();
 
     if (res.ok) {
-      await saveToken(data.token);
-      await saveUserId(data.userId);
+      saveToken(data.token);
+      saveUserId(data.userId);
       window.location.href = 'dashboard.html';
     } else {
       showAuthFeedback(data.message);
@@ -100,8 +88,8 @@ document.getElementById('sign-up-btn').addEventListener('click', async () => {
 });
 
 
-async function init() {
-  const token = await getToken();
+function init() {
+  const token = getToken();
   if (token) window.location.href = 'dashboard.html';
 }
 

@@ -1,5 +1,9 @@
 node_modules
 # Keep environment variables out of version control
 .env
+pwa/.env
 
 /generated/prisma
+
+pwa/config.js
+extension/config.js

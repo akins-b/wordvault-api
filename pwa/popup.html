@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WordVault</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFF176">
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -10,7 +13,7 @@
 <body class="auth-page">
 
   <div class="auth-brand">
-    <img src="icons/word-vault-icon.jpg" alt="WordVault Icon" style="width: 28px; height: 28px; border-radius: 6px;">
+    <span class="material-symbols-outlined icon-filled" style="color:#7A6500">book_2</span>
     WordVault
   </div>
   <p class="auth-subtitle">Save words as you browse</p>
@@ -20,13 +23,11 @@
     <button class="tab-btn" id="signup-tab">Sign Up</button>
   </div>
 
-
   <div class="auth-form" id="signin-form">
     <input class="input" type="email" id="signin-email" placeholder="Email" />
     <input class="input" type="password" id="signin-password" placeholder="Password" />
     <button class="btn btn-accent" id="sign-in-btn">Sign In</button>
   </div>
-
 
   <div class="auth-form hidden" id="signup-form">
     <input class="input" type="text" id="signup-firstname" placeholder="First Name" />
@@ -40,6 +41,7 @@
   <div class="auth-feedback hidden" id="auth-feedback"></div>
 
   <script src="config.js"></script>
+  <script src="shared.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

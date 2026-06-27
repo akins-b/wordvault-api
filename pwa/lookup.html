@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordVault - Lookup</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFF176">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="top-bar">
+    <button class="icon-btn" id="back-btn">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <div class="top-bar-brand">
+      <span class="material-symbols-outlined icon-filled" style="color:#7A6500">book_2</span>
+      WordVault
+    </div>
+    <button class="icon-btn" id="logout-btn">
+      <span class="material-symbols-outlined">logout</span>
+    </button>
+  </header>
+
+  <main class="main-content" style="margin-top:64px">
+
+    <div style="display:flex;gap:10px;margin-bottom:16px;margin-top:8px">
+      <input class="input" type="text" id="word-input" placeholder="Search words..." style="flex:1" />
+      <button class="btn btn-accent" id="lookup-btn" style="width:auto;padding:12px 16px">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+    </div>
+
+    <div id="loading" class="hidden" style="text-align:center;padding:20px;color:var(--text-secondary)">
+      Looking up...
+    </div>
+
+    <div id="result-section" class="hidden">
+
+      <div style="margin-bottom:16px">
+        <h2 id="result-word" style="font-size:28px;font-weight:700;font-family:Georgia,serif;margin-bottom:6px"></h2>
+        <p id="result-definition" style="font-size:14px;color:var(--text-secondary);line-height:1.5"></p>
+        <p id="result-example" class="hidden" style="font-size:13px;color:var(--text-secondary);font-style:italic;margin-top:8px;padding:10px;background:var(--surface-container);border-radius:var(--radius)"></p>
+      </div>
+
+      <div style="margin-bottom:12px">
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Synonyms</div>
+        <div id="result-synonyms"></div>
+      </div>
+
+      <div style="margin-bottom:16px">
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">Antonyms</div>
+        <div id="result-antonyms"></div>
+      </div>
+
+      <div class="divider-line"></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;padding-top:12px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer">
+          <input type="checkbox" id="wants-example" style="accent-color:var(--accent-text);width:16px;height:16px" />
+          Include example sentence
+        </label>
+        <select class="input" id="book-select">
+          <option value="">No book (save standalone)</option>
+        </select>
+        <button class="btn btn-accent" id="save-btn">Save to WordVault</button>
+      </div>
+
+      <div id="feedback" class="feedback hidden" style="margin-top:12px"></div>
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" id="nav-home">
+      <span class="material-symbols-outlined">home</span>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" id="nav-vault">
+      <span class="material-symbols-outlined">account_balance_wallet</span>
+      <span>Vault</span>
+    </button>
+    <button class="nav-item" id="nav-settings">
+      <span class="material-symbols-outlined">settings</span>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <script src="config.js"></script>
+  <script src="shared.js"></script>
+  <script src="lookup.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordVault - Vault</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFF176">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="top-bar">
+    <div class="top-bar-brand">
+      <span class="material-symbols-outlined icon-filled" style="color:#7A6500">book_2</span>
+      WordVault
+    </div>
+    <button class="icon-btn" id="logout-btn">
+      <span class="material-symbols-outlined">logout</span>
+    </button>
+  </header>
+
+  <main class="main-content" style="margin-top:64px">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 16px">
+      <h2 style="font-size:18px;font-weight:600">Your Vault</h2>
+    </div>
+
+    <div style="background:var(--surface-container);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;display:flex;align-items:center;gap:16px;margin-bottom:20px">
+      <div style="flex:1">
+        <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em">Total Words</div>
+        <div style="font-size:20px;font-weight:700" id="vault-total">—</div>
+      </div>
+      <div style="width:1px;height:32px;background:var(--border)"></div>
+      <div style="flex:1">
+        <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em">Mastered</div>
+        <div style="font-size:20px;font-weight:700;color:var(--accent-text)" id="vault-mastered">—</div>
+      </div>
+    </div>
+
+    <div style="position:relative;margin-bottom:16px">
+      <input class="input" type="text" id="search-input" placeholder="Search your words..." />
+    </div>
+
+    <div id="vault-entries" style="display:flex;flex-direction:column;gap:10px">
+      <div style="text-align:center;color:var(--text-secondary);padding:20px;font-size:14px">Loading...</div>
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item" id="nav-home">
+      <span class="material-symbols-outlined">home</span>
+      <span>Home</span>
+    </button>
+    <button class="nav-item active" id="nav-vault">
+      <span class="material-symbols-outlined icon-filled">account_balance_wallet</span>
+      <span>Vault</span>
+    </button>
+    <button class="nav-item" id="nav-settings">
+      <span class="material-symbols-outlined">settings</span>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <script src="config.js"></script>
+  <script src="shared.js"></script>
+  <script src="vault.js"></script>
+</body>
+</html>

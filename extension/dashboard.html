@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WordVault</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+  <header class="top-bar">
+    <div class="top-bar-brand">
+      <img src="icons/word-vault-icon.jpg" alt="WordVault Icon" style="width: 24px; height: 24px; border-radius: 4px;">
+      WordVault
+    </div>
+    <button class="icon-btn" id="logout-btn" title="Sign out">
+      <span class="material-symbols-outlined">logout</span>
+    </button>
+  </header>
+
+
+  <main class="main-content" style="margin-top: 64px">
+
+
+    <div style="display:flex; gap:12px; margin-bottom:20px; margin-top:8px">
+      <div class="stat-card">
+        <span class="stat-number" id="stat-total">—</span>
+        <span class="stat-label">Words saved</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-mastered">—</span>
+        <span class="stat-label">Mastered</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">
+          <span id="stat-streak">—</span>
+          <span class="material-symbols-outlined icon-filled" style="color:#EAC32C;font-size:20px">local_fire_department</span>
+        </div>
+        <span class="stat-label">Week streak</span>
+      </div>
+    </div>
+
+
+    <button class="btn btn-accent" id="go-lookup-btn" style="margin-bottom:24px">
+      <span class="material-symbols-outlined">search</span>
+      Look up a word
+    </button>
+
+
+    <div class="section-title">
+      Your recent captures
+    </div>
+
+    <div id="recent-entries" style="display:flex; flex-direction:column; gap:10px">
+      <div style="text-align:center; color:var(--text-secondary); padding:20px; font-size:14px">
+        Loading...
+      </div>
+    </div>
+
+  </main>
+
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-home">
+      <span class="material-symbols-outlined icon-filled">home</span>
+      <span>Home</span>
+    </button>
+    <button class="nav-item" id="nav-vault">
+      <span class="material-symbols-outlined">account_balance_wallet</span>
+      <span>Vault</span>
+    </button>
+    <button class="nav-item" id="nav-settings">
+      <span class="material-symbols-outlined">settings</span>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <script src="config.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
