@@ -13,9 +13,9 @@ async function handleClerkWebhook(req, res){
         if (event.type === "user.created"){
             const id = event.data.id;
             const email = event.data.email_addresses?.[0]?.email_address ?? null;
-            const username = event.data.username;
-            const firstName = event.data.first_name;
-            const lastName = event.data.last_name;
+            const username = event.data.username || `user_${id.substring(5, 12)}`;
+            const firstName = event.data.first_name || '';
+            const lastName = event.data.last_name || '';
 
             const user = await userService.createUser({id, email, username,firstName, lastName});
 
@@ -23,9 +23,9 @@ async function handleClerkWebhook(req, res){
         } else if (event.type === "user.updated") {
             const id = event.data.id;
             const email = event.data.email_addresses?.[0]?.email_address ?? null;
-            const username = event.data.username || "User";
-            const firstName = event.data.first_name;
-            const lastName = event.data.last_name;
+            const username = event.data.username || `user_${id.substring(5, 12)}`;
+            const firstName = event.data.first_name || '';
+            const lastName = event.data.last_name || '';
             
             const user = await userService.updateUser({id, email, username, firstName, lastName});
 

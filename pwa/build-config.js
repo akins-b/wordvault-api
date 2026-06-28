@@ -8,8 +8,9 @@ if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
 }
 
 const apiUrl = process.env.API_URL || 'http://localhost:3006';
+const clerkKey = process.env.CLERK_PUBLISHABLE_KEY;
 
-const content = `const API_URL = '${apiUrl}';\n`;
+const content = `const API_URL = '${apiUrl}';
+const CLERK_PUBLISHABLE_KEY = '${clerkKey}';\n`;
 
 fs.writeFileSync('./config.js', content);
-console.log(`config.js generated with API_URL=${apiUrl}`);

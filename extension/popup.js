@@ -4,6 +4,7 @@ const signinForm = document.getElementById('signin-form');
 const signupForm = document.getElementById('signup-form');
 const authFeedback = document.getElementById('auth-feedback');
 
+
 signinTab.addEventListener('click', () => {
   signinTab.classList.add('active');
   signupTab.classList.remove('active');
@@ -46,6 +47,11 @@ document.getElementById('sign-in-btn').addEventListener('click', async () => {
 
   if (!email || !password) return showAuthFeedback('Please fill in all fields');
 
+  const btn = document.getElementById('sign-in-btn');
+  const originalText = btn.textContent;
+  btn.textContent = 'Signing in...';
+  btn.disabled = true;
+
   try {
     const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
@@ -64,6 +70,9 @@ document.getElementById('sign-in-btn').addEventListener('click', async () => {
     }
   } catch (error) {
     showAuthFeedback('Connection failed. Is your server running?');
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
   }
 });
 
@@ -77,6 +86,11 @@ document.getElementById('sign-up-btn').addEventListener('click', async () => {
 
   if (!firstName || !lastName || !username || !email || !password)
     return showAuthFeedback('Please fill in all fields');
+
+  const btn = document.getElementById('sign-up-btn');
+  const originalText = btn.textContent;
+  btn.textContent = 'Signing up...';
+  btn.disabled = true;
 
   try {
     const res = await fetch(`${API_URL}/auth/register`, {
@@ -96,13 +110,18 @@ document.getElementById('sign-up-btn').addEventListener('click', async () => {
     }
   } catch (error) {
     showAuthFeedback('Connection failed. Is your server running?');
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
   }
 });
 
 
 async function init() {
   const token = await getToken();
-  if (token) window.location.href = 'dashboard.html';
+  if (token) {
+    window.location.href = 'dashboard.html';
+  }
 }
 
 init();

@@ -67,6 +67,11 @@ saveBtn.addEventListener('click', async () => {
   const text = wordInput.value.trim();
   const bookId = bookSelect.value || undefined;
 
+  const originalText = saveBtn.textContent;
+  saveBtn.textContent = 'Saving...';
+  saveBtn.disabled = true;
+  feedback.classList.add('hidden');
+
   try {
     const res = await apiFetch('/entry', {
       method: 'POST',
@@ -86,6 +91,12 @@ saveBtn.addEventListener('click', async () => {
     }
   } catch (err) {
     console.error('Save error:', err);
+    feedback.textContent = 'Network error while saving';
+    feedback.className = 'feedback error';
+    feedback.classList.remove('hidden');
+  } finally {
+    saveBtn.textContent = originalText;
+    saveBtn.disabled = false;
   }
 });
 
