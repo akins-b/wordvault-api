@@ -35,6 +35,7 @@ const loadClerk = async () => {
         script.src = 'https://current-whippet-53.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
         script.async = true;
         script.crossOrigin = 'anonymous';
+        script.setAttribute('data-clerk-publishable-key', CLERK_PUBLISHABLE_KEY);
         document.head.appendChild(script);
       }
       let retries = 0;
