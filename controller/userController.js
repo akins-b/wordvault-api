@@ -21,8 +21,25 @@ async function getStats(req, res) {
   }
 }
 
+async function updatePreferences(req, res){
+  try {
+    const userId = req.headers['x-user-id'];
+    const { weeklyEmailEnabled, pushEnabled } = req.body;
+
+    const user = await userService.updateUser(userId, {
+      weeklyEmailEnabled, 
+      pushEnabled
+  });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+
 
 module.exports = {
     getUserById,
-    getStats
+    getStats,
+    updatePreferences
 }

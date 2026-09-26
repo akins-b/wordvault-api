@@ -5,5 +5,6 @@ const userController = require("../controller/userController");
 
 router.get('/stats', protect, userController.getStats);
 router.get("/:id", protect, userController.getUserById);
+router.patch("/preferences", protect, userController.updatePreferences);
 
 module.exports = router;

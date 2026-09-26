@@ -12,6 +12,7 @@ const notificationRoutes = require('./route/notificationRouter');
 const authRoutes = require('./route/authRouter');
 const { startScheduler } = require('./utils/scheduler');
 const cors = require('cors');
+const { emailWorker, pushWorker } = require('./utils/workers');
 
 app.use(cors({
   origin: '*',
@@ -44,3 +45,5 @@ app.get("/health-check", (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+console.log("Notification workers started");

@@ -35,11 +35,67 @@ function signOut() {
   window.location.href = 'popup.html';
 }
 
+async function loadPreferences(){
+  try {
+    const userId = getUserId();
+    const res = await apiFetch(`/user/${userId}`);
+    const user = await res.json();
 
-function init() {
+    document.getElementById('weekly-toggle').checked = user.weeklyEmailEnabled;
+    document.getElementById('push-toggle').checked = user.pushEnabled;
+  } catch (error) {
+    console.error('Preferences error:', error);
+  }
+}
+
+async function savePreferences() {
+  try {
+    await apiFetch('/user/preferences', {
+      method: 'PATCH',
+      body: JSON.stringify({ [key]: value })
+    });
+    console.log('Preferences saved successfully');
+  } catch (error) {
+    console.error('Preferences error:', error);
+  }
+  
+} 
+
+document.getElementById('weekly-toggle').addEventListener('change', (e) => {
+  savePreference('weeklyEmailEnabled', e.target.checked);
+});
+
+document.getElementById('push-toggle').addEventListener('change', async (e) => {
+  if (e.target.checked) {
+    await subscribeToPush();
+  }
+  savePreference('pushEnabled', e.target.checked);
+});
+
+async function subscribeToPush() {
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: 'YOUR_VAPID_PUBLIC_KEY'
+    });
+
+    await apiFetch('/notifications/subscribe', {
+      method: 'POST',
+      body: JSON.stringify(subscription)
+    });
+    console.log('Push subscription saved');
+  } catch (err) {
+    console.error('Push subscription error:', err);
+  }
+}
+
+async function init() {
   const token = getToken();
   if (!token) { window.location.href = 'popup.html'; return; }
-  loadProfile();
+  await loadProfile();
+  await loadPreferences();
 }
+
 
 init();
