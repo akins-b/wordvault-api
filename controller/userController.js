@@ -26,7 +26,8 @@ async function updatePreferences(req, res){
     const userId = req.headers['x-user-id'];
     const { weeklyEmailEnabled, pushEnabled } = req.body;
 
-    const user = await userService.updateUser(userId, {
+    const user = await userService.updateUser({
+      id: userId,
       weeklyEmailEnabled, 
       pushEnabled
   });
