@@ -37,6 +37,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
+  // Exclude Clerk completely from SW to prevent auth breakage and caching issues
+  if (url.hostname.includes('clerk')) {
+    return;
+  }
+
   if (event.request.method === 'GET' && url.pathname.match(/^\/(entry|book|user)/)) {
     event.respondWith(
       fetch(event.request)

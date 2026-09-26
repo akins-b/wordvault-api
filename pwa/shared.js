@@ -37,7 +37,12 @@ const loadClerk = async () => {
         script.crossOrigin = 'anonymous';
         document.head.appendChild(script);
       }
-      while (!window.Clerk) await new Promise(r => setTimeout(r, 50));
+      let retries = 0;
+      while (!window.Clerk && retries < 200) {
+        await new Promise(r => setTimeout(r, 50));
+        retries++;
+      }
+      if (!window.Clerk) throw new Error("Clerk SDK failed to load");
     }
     if (!window.Clerk.loaded) {
       await window.Clerk.load({ publishableKey: CLERK_PUBLISHABLE_KEY });
