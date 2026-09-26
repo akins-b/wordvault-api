@@ -1,4 +1,3 @@
-
 const signinTab = document.getElementById('signin-tab');
 const signupTab = document.getElementById('signup-tab');
 const signinForm = document.getElementById('signin-form');
@@ -14,6 +13,7 @@ const loadClerk = async () => {
   }
 };
 
+// --- GOOGLE OAUTH ---
 document.getElementById('google-signin-btn').addEventListener('click', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('google-signin-btn');
@@ -40,6 +40,7 @@ document.getElementById('google-signup-btn').addEventListener('click', async (e)
   });
 });
 
+// --- UI TABS ---
 signinTab.addEventListener('click', () => {
   signinTab.classList.add('active');
   signupTab.classList.remove('active');
@@ -62,7 +63,7 @@ function showAuthFeedback(message, type = 'error') {
   authFeedback.classList.remove('hidden');
 }
 
-
+// --- EMAIL / PASSWORD SIGN IN (VIA CLERK) ---
 document.getElementById('sign-in-btn').addEventListener('click', async () => {
   const email = document.getElementById('signin-email').value.trim();
   const password = document.getElementById('signin-password').value.trim();
@@ -75,30 +76,30 @@ document.getElementById('sign-in-btn').addEventListener('click', async () => {
   btn.disabled = true;
 
   try {
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+    await loadClerk();
+    const signInAttempt = await window.Clerk.client.signIn.create({
+      identifier: email,
+      password,
     });
 
-    const data = await res.json();
-
-    if (res.ok) {
-      saveToken(data.token);
-      saveUserId(data.userId);
+    if (signInAttempt.status === 'complete') {
+      await window.Clerk.setActive({ session: signInAttempt.createdSessionId });
+      const clerkToken = await window.Clerk.session.getToken();
+      saveToken(clerkToken);
+      saveUserId(window.Clerk.user.id);
       window.location.href = 'dashboard.html';
     } else {
-      showAuthFeedback(data.message);
+      showAuthFeedback('Additional verification required.');
     }
   } catch (error) {
-    showAuthFeedback('Connection failed. Is your server running?');
+    showAuthFeedback(error.errors?.[0]?.message || 'Sign in failed');
   } finally {
     btn.textContent = originalText;
     btn.disabled = false;
   }
 });
 
-
+// --- EMAIL / PASSWORD SIGN UP (VIA CLERK) ---
 document.getElementById('sign-up-btn').addEventListener('click', async () => {
   const firstName = document.getElementById('signup-firstname').value.trim();
   const lastName = document.getElementById('signup-lastname').value.trim();
@@ -115,30 +116,33 @@ document.getElementById('sign-up-btn').addEventListener('click', async () => {
   btn.disabled = true;
 
   try {
-    const res = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ firstName, lastName, username, email, password })
+    await loadClerk();
+    const signUpAttempt = await window.Clerk.client.signUp.create({
+      emailAddress: email,
+      password,
+      firstName,
+      lastName,
+      username,
     });
 
-    const data = await res.json();
-
-    if (res.ok) {
-      saveToken(data.token);
-      saveUserId(data.userId);
+    if (signUpAttempt.status === 'complete') {
+      await window.Clerk.setActive({ session: signUpAttempt.createdSessionId });
+      const clerkToken = await window.Clerk.session.getToken();
+      saveToken(clerkToken);
+      saveUserId(window.Clerk.user.id);
       window.location.href = 'dashboard.html';
     } else {
-      showAuthFeedback(data.message);
+      showAuthFeedback('Verification required to complete signup.');
     }
   } catch (error) {
-    showAuthFeedback('Connection failed. Is your server running?');
+    showAuthFeedback(error.errors?.[0]?.message || 'Sign up failed');
   } finally {
     btn.textContent = originalText;
     btn.disabled = false;
   }
 });
 
-
+// --- INIT & SESSION CHECK ---
 async function init() {
   const token = getToken();
   if (token) {
@@ -156,3 +160,46 @@ async function init() {
 }
 
 init();
+
+// --- STORAGE & API HELPERS ---
+function getToken() {
+  return localStorage.getItem('token');
+}
+
+function saveToken(token) {
+  localStorage.setItem('token', token);
+}
+
+function getUserId() {
+  return localStorage.getItem('userId');
+}
+
+function saveUserId(userId) {
+  localStorage.setItem('userId', userId);
+}
+
+function clearAuth() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('userId');
+}
+
+async function apiFetch(endpoint, options = {}) {
+  const token = getToken();
+  const userId = getUserId();
+  return fetch(`${API_URL}${endpoint}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'x-user-id': userId,
+      ...options.headers
+    }
+  });
+}
+
+// --- SERVICE WORKER ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(err => console.error('SW registration failed:', err));
+  });
+}

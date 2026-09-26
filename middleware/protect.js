@@ -8,7 +8,6 @@ async function protect(req, res, next) {
       return res.status(401).json({ message: 'Unauthorized: No valid session' });
     }
 
-    // Attach userId to headers or request object so your controllers can read it easily
     req.userId = auth.userId;
     next();
   } catch (error) {
