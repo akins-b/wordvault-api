@@ -19,19 +19,34 @@ function clearAuth() {
   localStorage.removeItem('userId');
 }
 
+let isClerkLoading = false;
+let isClerkLoaded = false;
+
 const loadClerk = async () => {
-  if (!window.Clerk) {
-    const script = document.createElement('script');
-    script.src = 'https://current-whippet-53.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-    document.head.appendChild(script);
-    while (!window.Clerk) await new Promise(r => setTimeout(r, 50));
-  }
-  if (!window.Clerk.isReady) {
-    try {
+  if (isClerkLoaded || (window.Clerk && window.Clerk.loaded)) return;
+  while (isClerkLoading) await new Promise(r => setTimeout(r, 50));
+  if (isClerkLoaded || (window.Clerk && window.Clerk.loaded)) return;
+  
+  isClerkLoading = true;
+  try {
+    if (!window.Clerk) {
+      if (!document.querySelector('script[src*="clerk.browser.js"]')) {
+        const script = document.createElement('script');
+        script.src = 'https://current-whippet-53.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        document.head.appendChild(script);
+      }
+      while (!window.Clerk) await new Promise(r => setTimeout(r, 50));
+    }
+    if (!window.Clerk.loaded) {
       await window.Clerk.load({ publishableKey: CLERK_PUBLISHABLE_KEY });
-    } catch(e) {}
+    }
+    isClerkLoaded = true;
+  } catch(e) {
+    console.error("Clerk load error:", e);
+  } finally {
+    isClerkLoading = false;
   }
 };
 
