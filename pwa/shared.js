@@ -19,8 +19,36 @@ function clearAuth() {
   localStorage.removeItem('userId');
 }
 
+const loadClerk = async () => {
+  if (!window.Clerk) {
+    const script = document.createElement('script');
+    script.src = 'https://current-whippet-53.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    document.head.appendChild(script);
+    while (!window.Clerk) await new Promise(r => setTimeout(r, 50));
+  }
+  if (!window.Clerk.isReady) {
+    try {
+      await window.Clerk.load({ publishableKey: CLERK_PUBLISHABLE_KEY });
+    } catch(e) {}
+  }
+};
+
 async function apiFetch(endpoint, options = {}) {
-  const token = getToken();
+  let token = getToken();
+  try {
+    if (navigator.onLine !== false) {
+      await loadClerk();
+      if (window.Clerk && window.Clerk.session) {
+        token = await window.Clerk.session.getToken();
+        if (token) saveToken(token);
+      }
+    }
+  } catch (e) {
+    console.warn("Could not refresh clerk token", e);
+  }
+
   const userId = getUserId();
   return fetch(`${API_URL}${endpoint}`, {
     ...options,

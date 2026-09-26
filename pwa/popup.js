@@ -4,14 +4,7 @@ const signinForm = document.getElementById('signin-form');
 const signupForm = document.getElementById('signup-form');
 const authFeedback = document.getElementById('auth-feedback');
 
-const loadClerk = async () => {
-  while (!window.Clerk) await new Promise(r => setTimeout(r, 50));
-  if (!window.Clerk.isReady) {
-    try {
-      await window.Clerk.load({ publishableKey: CLERK_PUBLISHABLE_KEY });
-    } catch(e) {}
-  }
-};
+
 
 // --- GOOGLE OAUTH ---
 document.getElementById('google-signin-btn').addEventListener('click', async (e) => {
@@ -160,42 +153,6 @@ async function init() {
 }
 
 init();
-
-// --- STORAGE & API HELPERS ---
-function getToken() {
-  return localStorage.getItem('token');
-}
-
-function saveToken(token) {
-  localStorage.setItem('token', token);
-}
-
-function getUserId() {
-  return localStorage.getItem('userId');
-}
-
-function saveUserId(userId) {
-  localStorage.setItem('userId', userId);
-}
-
-function clearAuth() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('userId');
-}
-
-async function apiFetch(endpoint, options = {}) {
-  const token = getToken();
-  const userId = getUserId();
-  return fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-      'x-user-id': userId,
-      ...options.headers
-    }
-  });
-}
 
 // --- SERVICE WORKER ---
 if ('serviceWorker' in navigator) {
