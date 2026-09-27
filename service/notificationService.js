@@ -2,6 +2,8 @@ const prisma = require('../db');
 const { emailQueue, pushQueue } = require('../utils/queues');
 
 async function sendWeeklySummary() {
+  console.log('[DEBUG] Starting weekly summary generation on live server...');
+  
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
