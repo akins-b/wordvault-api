@@ -1,16 +1,6 @@
 async function sendEmail(to, subject, html) {
   const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
-  if (!BREVO_API_KEY) {
-    console.log(`\n================= [Email Mock] =================`);
-    console.log(`To:      ${to}`);
-    console.log(`Subject: ${subject}`);
-    console.log(`-------------------- Body ----------------------`);
-    console.log(html.trim());
-    console.log(`================================================\n`);
-    return;
-  }
-
   try {
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
@@ -30,6 +20,7 @@ async function sendEmail(to, subject, html) {
     if (!response.ok) {
       const errText = await response.text();
       console.error('Brevo Email API error:', response.status, errText);
+      throw new Error(`Brevo API Erroe: ${response.status} - ${errText}`);
     } else {
       console.log(`Email sent successfully via Brevo to ${to}`);
     }

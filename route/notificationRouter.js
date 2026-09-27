@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { protect } = require("../middleware/protect");
 const prisma = require('../db');
+const { sendWeeklySummary } = require('../service/notificationService');
 
 
 router.post('/subscribe', protect, async (req, res) => {
@@ -16,6 +17,15 @@ router.post('/subscribe', protect, async (req, res) => {
     });
 
     res.json({ message: 'Subscribed successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/trigger-weekly-summary', async (req, res) => {
+  try {
+    await sendWeeklySummary();
+    res.json({ message: 'Weekly summary triggered successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
