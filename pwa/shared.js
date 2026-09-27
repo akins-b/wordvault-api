@@ -14,9 +14,17 @@ function saveUserId(userId) {
   localStorage.setItem('userId', userId);
 }
 
-function clearAuth() {
+async function clearAuth() {
   localStorage.removeItem('token');
   localStorage.removeItem('userId');
+  try {
+    await loadClerk();
+    if (window.Clerk) {
+      await window.Clerk.signOut();
+    }
+  } catch (e) {
+    console.error("Clerk signout error:", e);
+  }
 }
 
 let isClerkLoading = false;

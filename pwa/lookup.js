@@ -16,16 +16,67 @@ async function loadBooks() {
   try {
     const res = await apiFetch('/book');
     const books = await res.json();
+    
+    // Clear existing options except the first one
+    bookSelect.innerHTML = '<option value="">No book (save standalone)</option>';
+    
     books.forEach(book => {
       const option = document.createElement('option');
       option.value = book.id;
       option.textContent = book.title;
       bookSelect.appendChild(option);
     });
+
+    const createOption = document.createElement('option');
+    createOption.value = '_new';
+    createOption.textContent = '+ Create New Book...';
+    bookSelect.appendChild(createOption);
   } catch (err) {
     console.error('Books error:', err);
   }
 }
+
+bookSelect.addEventListener('change', async (e) => {
+  if (e.target.value === '_new') {
+    const title = window.prompt('Enter new book title:');
+    if (!title || !title.trim()) {
+      bookSelect.value = ''; // Revert to "No book"
+      return;
+    }
+    
+    try {
+      const res = await apiFetch('/book', {
+        method: 'POST',
+        body: JSON.stringify({ title: title.trim() })
+      });
+      
+      if (res.ok) {
+        const newBook = await res.json();
+        const option = document.createElement('option');
+        // Handle case where backend returns { book: ... } or just the book object
+        const bookData = newBook.book || newBook;
+        option.value = bookData.id;
+        option.textContent = bookData.title;
+        // Insert before the "+ Create New Book" option
+        bookSelect.insertBefore(option, bookSelect.lastChild);
+        bookSelect.value = bookData.id;
+        
+        feedback.textContent = 'Book created! 🎉';
+        feedback.className = 'feedback success';
+        feedback.classList.remove('hidden');
+        setTimeout(() => feedback.classList.add('hidden'), 3000);
+      } else {
+        const data = await res.json();
+        alert(data.message || 'Failed to create book');
+        bookSelect.value = '';
+      }
+    } catch (err) {
+      console.error('Create book error:', err);
+      alert('Network error while creating book');
+      bookSelect.value = '';
+    }
+  }
+});
 
 lookupBtn.addEventListener('click', async () => {
   const text = wordInput.value.trim();
@@ -117,8 +168,8 @@ document.getElementById('nav-settings').addEventListener('click', () => {
   window.location.href = 'settings.html';
 });
 
-document.getElementById('logout-btn').addEventListener('click', () => {
-  clearAuth();
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await clearAuth();
   window.location.href = 'popup.html';
 });
 

@@ -82,8 +82,8 @@ document.getElementById('nav-settings').addEventListener('click', () => {
   window.location.href = 'settings.html';
 });
 
-document.getElementById('logout-btn').addEventListener('click', () => {
-  clearAuth();
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await clearAuth();
   window.location.href = 'popup.html';
 });
 

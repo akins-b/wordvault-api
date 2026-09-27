@@ -1,8 +1,8 @@
 async function init() {
   const token = getToken();
-  if (!token) { 
-    window.location.href = 'popup.html'; 
-    return; 
+  if (!token) {
+    window.location.href = 'popup.html';
+    return;
   }
 
   try {
@@ -22,7 +22,7 @@ function populateProfile(user) {
   if (nameEl) {
     nameEl.textContent = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username;
   }
-  
+
   const emailEl = document.getElementById('settings-email');
   if (emailEl) emailEl.textContent = user.email;
 
@@ -68,8 +68,8 @@ document.getElementById('nav-settings')?.addEventListener('click', () => {
 document.getElementById('logout-btn')?.addEventListener('click', signOut);
 document.getElementById('signout-btn')?.addEventListener('click', signOut);
 
-function signOut() {
-  clearAuth();
+async function signOut() {
+  await clearAuth();
   window.location.href = 'popup.html';
 }
 
