@@ -26,6 +26,7 @@ async function sendEmail(to, subject, html) {
     }
   } catch (error) {
     console.error('Failed to send email via Brevo:', error);
+    throw error;
   }
 }
 

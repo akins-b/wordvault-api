@@ -24,7 +24,6 @@ router.post('/subscribe', protect, async (req, res) => {
 
 router.post('/trigger-weekly-summary', (req, res) => {
   try {
-    // Run this asynchronously in the background so the request doesn't timeout
     sendWeeklySummary().catch(console.error);
     res.json({ message: 'Weekly summary generation started in the background' });
   } catch (error) {

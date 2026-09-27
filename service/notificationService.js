@@ -32,15 +32,15 @@ async function sendWeeklySummary() {
         email: user.email,
         subject: `Your weekly word summary`,
         html: `
-          <h2>Hi ${user.username}! Here's your week in words</h2>
-          <p>You learned <strong>${user.entries.length} new words</strong> this week!</p>
+          <h2>Hi ${user.firstName || 'there'}! Here's your week in words</h2>
+          <p>You learned <strong>${user.entries.length} new word${user.entries.length === 1 ? '' : 's'}</strong> this week!</p>
           <p>Mastered: <strong>${masteredCount}</strong></p>
-          <h3>Your new words:</h3>
+          <h3>Your new word${user.entries.length === 1 ? '' : 's'}:</h3>
           <ul>
             ${user.entries.map(e => `
               <li>
                 <strong>${e.text}</strong> — ${e.definition}
-                ${e.example ? `<br><em>"${e.example}"</em>` : ''}
+                ${e.example ? `<br><br><em>"${e.example}"</em>` : ''}
               </li>
             `).join('')}
           </ul>
@@ -58,7 +58,7 @@ async function sendWeeklySummary() {
           subscription,
           payload: {
             title: 'Your weekly word summary',
-            body: `You learned ${user.entries.length} new words this week! Check your email for details.`,
+            body: `You learned ${user.entries.length} new word${user.entries.length === 1 ? '' : 's'} this week! Check your email for details.`,
             icon: '/icons/icon-192.png'
           }
         });
