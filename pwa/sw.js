@@ -1,4 +1,4 @@
-const CACHE_NAME = 'wordvault-v2';
+const CACHE_NAME = 'wordvault-v3';
 const STATIC_ASSETS = [
   '/index.html',
   '/popup.html',

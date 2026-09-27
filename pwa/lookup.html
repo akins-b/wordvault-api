@@ -66,6 +66,12 @@
         <select class="input" id="book-select">
           <option value="">No book (save standalone)</option>
         </select>
+        
+        <div id="new-book-ui" class="hidden" style="display:flex;gap:8px;align-items:center;">
+          <input type="text" class="input" id="new-book-input" placeholder="New book title..." style="flex:1" />
+          <button class="btn btn-accent" id="create-book-btn" style="width:auto;padding:12px;">Add</button>
+          <button class="btn" id="cancel-book-btn" style="width:auto;padding:12px;background:var(--surface-container);color:var(--text-primary);">Cancel</button>
+        </div>
         <button class="btn btn-accent" id="save-btn">Save to WordVault</button>
       </div>
 

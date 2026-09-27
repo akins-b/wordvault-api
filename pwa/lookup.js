@@ -11,6 +11,10 @@ const bookSelect = document.getElementById('book-select');
 const saveBtn = document.getElementById('save-btn');
 const loading = document.getElementById('loading');
 const feedback = document.getElementById('feedback');
+const newBookUi = document.getElementById('new-book-ui');
+const newBookInput = document.getElementById('new-book-input');
+const createBookBtn = document.getElementById('create-book-btn');
+const cancelBookBtn = document.getElementById('cancel-book-btn');
 
 async function loadBooks() {
   try {
@@ -36,45 +40,58 @@ async function loadBooks() {
   }
 }
 
-bookSelect.addEventListener('change', async (e) => {
+bookSelect.addEventListener('change', (e) => {
   if (e.target.value === '_new') {
-    const title = window.prompt('Enter new book title:');
-    if (!title || !title.trim()) {
-      bookSelect.value = ''; // Revert to "No book"
-      return;
-    }
+    bookSelect.classList.add('hidden');
+    newBookUi.classList.remove('hidden');
+    newBookInput.focus();
+  }
+});
+
+cancelBookBtn.addEventListener('click', () => {
+  bookSelect.value = '';
+  newBookUi.classList.add('hidden');
+  bookSelect.classList.remove('hidden');
+  newBookInput.value = '';
+});
+
+createBookBtn.addEventListener('click', async () => {
+  const title = newBookInput.value.trim();
+  if (!title) return;
+  
+  const originalText = createBookBtn.textContent;
+  createBookBtn.textContent = '...';
+  createBookBtn.disabled = true;
+
+  try {
+    const res = await apiFetch('/book', {
+      method: 'POST',
+      body: JSON.stringify({ title })
+    });
     
-    try {
-      const res = await apiFetch('/book', {
-        method: 'POST',
-        body: JSON.stringify({ title: title.trim() })
-      });
+    if (res.ok) {
+      const newBook = await res.json();
+      const option = document.createElement('option');
+      const bookData = newBook.book || newBook;
+      option.value = bookData.id;
+      option.textContent = bookData.title;
       
-      if (res.ok) {
-        const newBook = await res.json();
-        const option = document.createElement('option');
-        // Handle case where backend returns { book: ... } or just the book object
-        const bookData = newBook.book || newBook;
-        option.value = bookData.id;
-        option.textContent = bookData.title;
-        // Insert before the "+ Create New Book" option
-        bookSelect.insertBefore(option, bookSelect.lastChild);
-        bookSelect.value = bookData.id;
-        
-        feedback.textContent = 'Book created! 🎉';
-        feedback.className = 'feedback success';
-        feedback.classList.remove('hidden');
-        setTimeout(() => feedback.classList.add('hidden'), 3000);
-      } else {
-        const data = await res.json();
-        alert(data.message || 'Failed to create book');
-        bookSelect.value = '';
-      }
-    } catch (err) {
-      console.error('Create book error:', err);
-      alert('Network error while creating book');
-      bookSelect.value = '';
+      bookSelect.insertBefore(option, bookSelect.lastChild);
+      bookSelect.value = bookData.id;
+      
+      newBookUi.classList.add('hidden');
+      bookSelect.classList.remove('hidden');
+      newBookInput.value = '';
+    } else {
+      const data = await res.json();
+      alert(data.message || 'Failed to create book');
     }
+  } catch (err) {
+    console.error('Create book error:', err);
+    alert('Network error while creating book');
+  } finally {
+    createBookBtn.textContent = originalText;
+    createBookBtn.disabled = false;
   }
 });
 
@@ -130,10 +147,7 @@ saveBtn.addEventListener('click', async () => {
     });
 
     if (res.ok) {
-      feedback.textContent = 'Word saved! 🎉';
-      feedback.className = 'feedback success';
-      feedback.classList.remove('hidden');
-      setTimeout(() => feedback.classList.add('hidden'), 3000);
+      window.location.href = 'vault.html';
     } else {
       const data = await res.json();
       feedback.textContent = data.message || 'Failed to save';
