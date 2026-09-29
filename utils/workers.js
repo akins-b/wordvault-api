@@ -1,6 +1,6 @@
 const { Worker } = require("bullmq");
 const { sendPushNotification } = require("./push");
-const redis = require("./redis");
+const { workerConnection } = require("./redis");
 const { sendEmail } = require("./email");
 
 // Email Worker
@@ -13,7 +13,7 @@ const emailWorker = new Worker('email-notifications', async (job) => {
 
     console.log(`Email sent to ${email}`);
 }, {
-    connection: redis,
+    connection: workerConnection,
     concurrency: 5
 
 });
@@ -29,7 +29,7 @@ const pushWorker = new Worker('push-notifications', async (job) => {
 
     console.log(`Push notification sent`);
 }, {
-    connection: redis,
+    connection: workerConnection,
     concurrency: 10
 
 });
@@ -50,6 +50,9 @@ pushWorker.on('completed', (job) => {
 pushWorker.on('failed', (job, err) => {
   console.error(`Push job ${job.id} failed:`, err.message);
 });
+
+emailWorker.on('error', (e) => console.error('[emailWorker]', e.code || e.message));
+pushWorker.on('error', (e) => console.error('[pushWorker]', e.code || e.message));
 
 module.exports = {
     emailWorker,

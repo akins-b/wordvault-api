@@ -7,7 +7,7 @@ async function sendWeeklySummary() {
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-
+  console.time('findMany');
   const users = await prisma.user.findMany({
     include: {
       pushSubscriptions: true,
@@ -18,6 +18,9 @@ async function sendWeeklySummary() {
       }
     }
   });
+  console.timeEnd('findMany');
+  console.log(`[weekly] ${users.length} users loaded`);
+
 
   let emailJobsAdded = 0;
   let pushJobsAdded = 0;
@@ -30,6 +33,7 @@ async function sendWeeklySummary() {
     const masteredCount = user.entries.filter(e => e.mastered).length;
 
     if (user.weeklyEmailEnabled) {
+      console.log(`[weekly] adding email job for user ${user.id}...`);
       await emailQueue.add(`email-${user.id}`, {
         email: user.email,
         subject: `Your weekly word summary`,
@@ -49,6 +53,8 @@ async function sendWeeklySummary() {
           <p>Keep it up!</p>
         `
       });
+
+      console.log(`[weekly] email job added for user ${user.id}`);
 
       emailJobsAdded++;
     }

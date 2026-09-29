@@ -4,7 +4,11 @@ const { sendWeeklySummary } = require('../service/notificationService');
 function startScheduler() {
   cron.schedule('0 18 * * 0', async () => {
     console.log(' Running weekly summary...');
-    await sendWeeklySummary();
+    try {
+      await sendWeeklySummary();
+    } catch (error) {
+      console.error('Error in weekly summary:', error);
+    }
   }, {
     timezone: 'Africa/Lagos'
   });
