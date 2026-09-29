@@ -2,7 +2,7 @@ const prisma = require('../db');
 const { emailQueue, pushQueue } = require('../utils/queues');
 
 async function sendWeeklySummary() {
-  console.log('[DEBUG] Starting weekly summary generation on live server...');
+  console.log('Starting weekly summary generation...');
   
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -29,11 +29,9 @@ async function sendWeeklySummary() {
     if (user.entries.length === 0) continue;
 
 
-    const wordList = user.entries.map(e => `• ${e.text} — ${e.definition}`).join('\n');
     const masteredCount = user.entries.filter(e => e.mastered).length;
 
     if (user.weeklyEmailEnabled) {
-      console.log(`[weekly] adding email job for user ${user.id}...`);
       await emailQueue.add(`email-${user.id}`, {
         email: user.email,
         subject: `Your weekly word summary`,
@@ -44,7 +42,7 @@ async function sendWeeklySummary() {
           <h3>Your new word${user.entries.length === 1 ? '' : 's'}:</h3>
           <ul>
             ${user.entries.map(e => `
-              <li>
+              <li style="margin-bottom: 16px;">
                 <strong>${e.text}</strong> — ${e.definition}
                 ${e.example ? `<br><br><em>"${e.example}"</em>` : ''}
               </li>
@@ -53,8 +51,6 @@ async function sendWeeklySummary() {
           <p>Keep it up!</p>
         `
       });
-
-      console.log(`[weekly] email job added for user ${user.id}`);
 
       emailJobsAdded++;
     }

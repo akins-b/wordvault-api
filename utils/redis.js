@@ -9,7 +9,6 @@ function createRedis(name, opts = {}) {
     ...opts,
   });
 
-  client.on('connect', () => console.log(`[redis:${name}] connect`));
   client.on('ready', () => console.log(`[redis:${name}] ready`));
   client.on('error', (err) => console.error(`[redis:${name}] error:`, err.code, err.message));
 
