@@ -14,7 +14,9 @@ const emailWorker = new Worker('email-notifications', async (job) => {
     console.log(`Email sent to ${email}`);
 }, {
     connection: workerConnection,
-    concurrency: 5
+    concurrency: 5,
+    drainDelay: 300,
+    stalledInterval: 300000
 
 });
 
@@ -30,7 +32,9 @@ const pushWorker = new Worker('push-notifications', async (job) => {
     console.log(`Push notification sent`);
 }, {
     connection: workerConnection,
-    concurrency: 10
+    concurrency: 10,
+    drainDelay: 300,
+    stalledInterval: 300000
 
 });
 

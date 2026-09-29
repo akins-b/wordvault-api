@@ -1,4 +1,5 @@
 require('dotenv').config();
+require("./scripts/test-redis");
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3006;

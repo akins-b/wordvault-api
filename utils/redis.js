@@ -3,17 +3,16 @@ const { Redis } = require('ioredis');
 
 function createRedis(name, opts = {}) {
   const client = new Redis(process.env.REDIS_URL, {
-    family: 0,
-    tls: { rejectUnauthorized: false },
-    keepAlive: 10000, // TCP keepalive so idle sockets aren't silently dropped
+    family: 4,
+    keepAlive: 10000,
     retryStrategy: (times) => Math.min(times * 200, 3000),
     ...opts,
   });
 
-  client.on('error', (err) => console.error(`[redis:${name}] error:`, err.code || err.message));
+  client.on('connect', () => console.log(`[redis:${name}] connect`));
   client.on('ready', () => console.log(`[redis:${name}] ready`));
-  client.on('close', () => console.log(`[redis:${name}] closed`));
-  client.on('reconnecting', () => console.log(`[redis:${name}] reconnecting`));
+  client.on('error', (err) => console.error(`[redis:${name}] error:`, err.code, err.message));
+
   return client;
 }
 
